@@ -23,7 +23,8 @@ export default class extends Phaser.State {
       y: this.world.centerY,
       asset: 'mushroom'
     })
-
+    this.game.physics.enable(this.mushroom)
+    this.mushroom.body.collideWorldBounds = true
     this.game.add.existing(this.mushroom)
   }
 
