@@ -24,6 +24,7 @@ export default class extends Phaser.State {
     this.load.tilemap('tilemap', 'assets/tiles/tileMap.json', null, Phaser.Tilemap.TILED_JSON)
     this.load.image('tiles', 'assets/tiles/tiles.png')
     this.load.image('knight', 'assets/images/knight17x21.png')
+    this.load.spritesheet('bat', 'assets/images/32x32-bat-sprite_4.png', 32, 32)
   }
 
   render () {

@@ -1,6 +1,7 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
-// import Knight from '../sprites/knight'
+import Player from '../sprites/player'
+import {createBats} from '../sprites/bat'
 
 export default class extends Phaser.State {
   init () {}
@@ -10,33 +11,26 @@ export default class extends Phaser.State {
     this.map = this.game.add.tilemap('tilemap')
     this.map.addTilesetImage('tiles', 'tiles')
     this.groundLayer = this.map.createLayer('TileLayer')// must match layer name
-    this.groundLayer.scale.setTo(this.game.width / (32 * 15), this.game.height / (32 * 10))// resizes tile map to fit
     this.groundLayer.resizeWorld()
-    this.p = this.game.add.sprite(200, 200, 'knight')
-  
-    this.game.physics.enable(this.p)
-    this.p.body.collideWorldBounds = true
-    this.cursors = this.game.input.keyboard.createCursorKeys()
+    this.map.setCollisionBetween(47, 48)
+    this.player = new Player({
+      game: this.game,
+      x: 200,
+      y: 200,
+      asset: 'knight'
+    })
+    this.game.add.existing(this.player)
+
+    this.bats = createBats(this.game, 3)
+    this.bats.forEach(bat => this.game.add.existing(bat))
   }
   update () {
-    this.game.physics.arcade.collide(this.p, this.groundLayer)
-    this.p.body.velocity.x = 0
-    this.p.body.velocity.y = 0
-    if (this.cursors.down.isDown) {
-      this.p.body.velocity.y = 200
-    }
-    if (this.cursors.up.isDown) {
-      this.p.body.velocity.y = -200
-    }
-    if (this.cursors.left.isDown) {
-      this.p.body.velocity.x = -150
-    } else if (this.cursors.right.isDown) {
-      this.p.body.velocity.x = 150
-    }
+    this.game.physics.arcade.collide(this.player, this.groundLayer)
+
   }
   render () {
     if (__DEV__) {
-      this.game.debug.spriteInfo(this.p, 32, 32)
+      this.game.debug.spriteInfo(this.player, 32, 32)
     }
   }
 }
