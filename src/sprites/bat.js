@@ -7,7 +7,6 @@ export default class Bat extends Phaser.Sprite {
     this.game.physics.enable(this)
     this.body.collideWorldBounds = true
     this.body.immovable = true
-
   }
 
   update () {
@@ -22,16 +21,16 @@ export const createBats = (game, number) => {
   for (let i = 0; i < number; i++) {
     bats.push(new Bat({
       game,
-      x: random(250),
-      y: random(250),
+      x: random(230, 640),
+      y: random(32, 448),
       asset: 'bat'
     }))
   }
   return bats
 }
 
-const random = (max) => {
-  return Math.random() * max
+const random = (min, max) => {
+  return Math.random() * (max - min) + min
 }
 
 const randomSign = () => {
