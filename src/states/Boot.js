@@ -23,8 +23,11 @@ export default class extends Phaser.State {
     // this.load.image('loaderBar', './assets/images/loader-bar.png')
     this.load.tilemap('tilemap', 'assets/tiles/tileMap.json', null, Phaser.Tilemap.TILED_JSON)
     this.load.image('tiles', 'assets/tiles/tiles.png')
+    // this.load.tilemap('tilemap', 'assets/tiles/tileMap2.json', null, Phaser.Tilemap.TILED_JSON)
+    // this.load.image('tiles', 'assets/tiles/tileMap2.png')
     this.load.image('knight', 'assets/images/knight17x21.png')
     this.load.spritesheet('bat', 'assets/images/32x32-bat-sprite_4.png', 32, 32)
+    this.load.image('sword', 'assets/images/sword9x25.png')
   }
 
   render () {

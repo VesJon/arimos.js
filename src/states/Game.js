@@ -12,7 +12,7 @@ export default class extends Phaser.State {
     this.map.addTilesetImage('tiles', 'tiles')
     this.groundLayer = this.map.createLayer('TileLayer')// must match layer name
     this.groundLayer.resizeWorld()
-    this.map.setCollisionBetween(47, 48)
+    this.map.setCollisionBetween(17, 20)
     this.player = new Player({
       game: this.game,
       x: 200,
@@ -20,7 +20,6 @@ export default class extends Phaser.State {
       asset: 'knight'
     })
     this.game.add.existing(this.player)
-
     this.bats = createBats(this.game, 3)
     this.bats.forEach(bat => this.game.add.existing(bat))
   }
@@ -31,6 +30,7 @@ export default class extends Phaser.State {
   render () {
     if (__DEV__) {
       this.game.debug.spriteInfo(this.player, 32, 32)
+      this.game.debug.spriteInfo(this.player.sword, 128,128)
     }
   }
 }
