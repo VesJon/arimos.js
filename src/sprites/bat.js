@@ -7,6 +7,7 @@ export default class Bat extends Phaser.Sprite {
     this.game.physics.enable(this)
     this.body.collideWorldBounds = true
     this.body.immovable = true
+
   }
 
   update () {
