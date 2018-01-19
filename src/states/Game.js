@@ -25,7 +25,8 @@ export default class extends Phaser.State {
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
-
+    this.game.physics.arcade.collide(this.player, this.bats)
+    this.game.physics.arcade.collide(this.player.sword, this.bats)
   }
   render () {
     if (__DEV__) {

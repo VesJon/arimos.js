@@ -4,6 +4,8 @@ export default class Bat extends Phaser.Sprite {
   constructor ({game, x, y, asset}) {
     super(game, x, y, asset)
     this.animations.add('flap', [1, 2, 3], true)
+    this.game.physics.enable(this)
+    this.body.collideWorldBounds = true
   }
 
   update () {
