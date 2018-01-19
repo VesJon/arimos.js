@@ -2,6 +2,7 @@
 import Phaser from 'phaser'
 import Player from '../sprites/player'
 import {createBats} from '../sprites/bat'
+import {setupText} from '../texts/index'
 
 export default class extends Phaser.State {
   init () {}
@@ -19,8 +20,10 @@ export default class extends Phaser.State {
       asset: 'knight'
     })
     this.game.add.existing(this.player)
-    this.setupText()
     this.player.body.bounce.set(1)
+    // add texts
+    setupText(this.game, this)
+
 
     this.batsGroup = this.game.add.group()
     this.game.generateEnemies = (game) => {
@@ -77,15 +80,5 @@ export default class extends Phaser.State {
       // this.game.debug.spriteBounds(this.player)
       // this.batsGroup.children.forEach(bat => this.game.debug.spriteBounds(bat))
     }
-  }
-
-  setupText () {
-    this.scoreText = this.createText(675, 20, 'left', `Score: ${this.game.globals.score}`)
-    this.levelText = this.createText(675, 110, 'center', `Level: ${this.game.globals.level}`)
-    this.healthText = this.createText(675, 200, 'right', `Health: 100`)
-  }
-
-  createText (x, y, align, text) {
-    return this.game.add.bitmapText(x, y, 'nokia', text, 0)
   }
 }

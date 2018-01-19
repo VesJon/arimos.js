@@ -7,7 +7,7 @@
     "scripts": {
         "dev": "webpack",
         "deploy": "webpack --config webpack.production.config.js",
-        "cordova": "webpack --config webpack.cordova.config.js",
+        "cordova": "webpack --config webpack.cordova.config.js & node server/index.js",
         "test": "eslint './src/**/*.js'"
     },
     "license": "MIT",
