@@ -18,7 +18,6 @@ export default class Player extends Phaser.Sprite {
       this.body.velocity.y = 200
       this.sword.anchor.setTo(2, 2.5) // down sword
       this.sword.angle+=180
-      
     }
     if (this.cursors.up.isDown) {
       this.body.velocity.y = -200

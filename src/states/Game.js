@@ -30,8 +30,8 @@ export default class extends Phaser.State {
   }
   render () {
     if (__DEV__) {
-      this.game.debug.spriteInfo(this.player, 32, 32)
-      this.game.debug.spriteInfo(this.player.sword, 128,128)
+      this.game.debug.spriteInfo(this.player, 200,200)
+      //this.game.debug.spriteInfo(this.player.sword, 128,128)
     }
   }
 }
