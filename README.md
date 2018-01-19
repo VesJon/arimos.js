@@ -1,20 +1,8 @@
-# Phaser + ES6 + Webpack.
-#### A bootstrap project to create games with Phaser + ES6 + Webpack.
+# Arimos JS
+## A Hacky Pixel Dungeon
+### Built using boilerplate by https://github.com/RenaudROHLINGER
 
-![Phaser+ES6+Webpack](https://raw.githubusercontent.com/lean/phaser-es6-webpack/master/assets/images/phaser-es6-webpack.jpg)
-
-[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
-
-
-## Features
-- ESLINT with JavaScript Standard Style configuration
-- Next generation of Javascript
-- Browsers are automatically updated as you change project files
-- Webpack ready
-- WebFont Loader
-
-## Typescript 
-If you need typescript support checkout the ```typescript``` branch. Thanks to @MatsMaker
+###  (https://raw.githubusercontent.com/lean/phaser-es6-webpack/master/
 
 # Setup
 You'll need to install a few things before you have a working copy of the project.
@@ -38,7 +26,7 @@ Navigate to the cloned repo's directory.
 
 Run:
 
-```npm install``` 
+```npm install```
 
 or if you chose yarn, just run ```yarn```
 
@@ -67,7 +55,7 @@ Make sure to uncomment the cordova.js file in the src/index.html and to update c
 More informations about the cordova configuration:
 https://cordova.apache.org/docs/en/latest/config_ref/
 
-There is 3 platforms actually tested and supported : 
+There is 3 platforms actually tested and supported :
 - browser
 - ios
 - android
