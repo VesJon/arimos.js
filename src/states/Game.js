@@ -31,13 +31,19 @@ export default class extends Phaser.State {
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
-    this.game.physics.arcade.collide(this.player, this.batsGroup, () => {
+
+    this.batsGroup.children.forEach(bat => {
+      this.game.physics.arcade.overlap(this.player.sword, bat, (sword, bat) => {
+        bat.kill()
+      })
+    })
+    this.game.physics.arcade.collide(this.player, this.batsGroup.children, () => {
       this.player.damage(1)
       this.healthText.text = `Health: ${this.player.health}`
+    }, () => {
+      return !this.game.physics.arcade.overlap(this.player.sword, this.batsGroup.children)
     })
-    this.game.physics.arcade.collide(this.player.sword, this.bats)
     if (this.player.y < 5) {
-      console.log('hiya', this.game.globals.level)
       this.game.generateEnemies(this.game)
       this.player.body.position.set(137, 247)
       this.game.globals.level++
@@ -46,8 +52,10 @@ export default class extends Phaser.State {
   }
   render () {
     if (__DEV__) {
-      this.game.debug.spriteInfo(this.player, 200,200)
-      //this.game.debug.spriteInfo(this.player.sword, 128,128)
+      //this.game.debug.spriteInfo(this.player, 200,200)
+      this.game.debug.spriteBounds(this.player.sword)
+      this.game.debug.spriteBounds(this.player)
+      this.batsGroup.children.forEach(bat => this.game.debug.spriteBounds(bat))
     }
   }
 

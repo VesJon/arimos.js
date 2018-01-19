@@ -11,8 +11,8 @@ export default class Bat extends Phaser.Sprite {
 
   update () {
     this.animations.play('flap', 4)
-    this.body.velocity.x = random(100) * randomSign()
-    this.body.velocity.y = random(100) * randomSign()
+    this.body.velocity.x = random(0, 100) * randomSign()
+    this.body.velocity.y = random(0, 100) * randomSign()
   }
 }
 
