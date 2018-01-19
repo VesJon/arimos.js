@@ -13,6 +13,7 @@ export default class extends Phaser.State {
     this.groundLayer = this.map.createLayer('TileLayer')// must match layer name
     this.groundLayer.resizeWorld()
     this.map.setCollisionBetween(47, 48)
+
     this.player = new Player({
       game: this.game,
       x: 200,
@@ -20,13 +21,19 @@ export default class extends Phaser.State {
       asset: 'knight'
     })
     this.game.add.existing(this.player)
+    this.game.playerHealth = 100
+    this.player.body.bounce.set(1)
 
-    this.bats = createBats(this.game, 3)
-    this.bats.forEach(bat => this.game.add.existing(bat))
+    this.batsGroup = this.game.add.group()
+    this.game.generateEnemies = (game) => {
+      this.batsGroup.removeAll(true)
+      const bats = createBats(this.game, 3)
+      this.batsGroup.addMultiple(bats)
+    }
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
-
+    this.game.physics.arcade.collide(this.player, this.batsGroup, () => this.player.damage(1))
   }
   render () {
     if (__DEV__) {
