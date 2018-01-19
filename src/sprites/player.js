@@ -14,9 +14,11 @@ export default class Player extends Phaser.Sprite {
     this.game.physics.enable(this.sword)
     this.sword.body.immovable = true
     // this.sword.body.setSize(75, 100)
-    this.sword.body.setSize(9, 25)
-    this.sword.anchor.setTo(-3, 2) // right sword
+    this.sword.anchor.setTo(-1, 1) // right sword
     this.sword.angle += 90
+    this.sword.scale.x = 2
+    this.sword.scale.y = 2
+    this.sword.body.setSize(25, 8, -10, 35)
   }
 
   update () {
