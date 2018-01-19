@@ -11,7 +11,7 @@ export default class extends Phaser.State {
     this.map = this.game.add.tilemap('tilemap')
     this.map.addTilesetImage('tiles', 'tiles')
     this.groundLayer = this.map.createLayer('TileLayer')// must match layer name
-    this.groundLayer.resizeWorld()
+    // this.groundLayer.resizeWorld()
     this.map.setCollisionBetween(47, 48)
 
     this.player = new Player({
@@ -21,7 +21,7 @@ export default class extends Phaser.State {
       asset: 'knight'
     })
     this.game.add.existing(this.player)
-    this.game.playerHealth = 100
+    this.setupText()
     this.player.body.bounce.set(1)
 
     this.batsGroup = this.game.add.group()
@@ -39,5 +39,15 @@ export default class extends Phaser.State {
     if (__DEV__) {
       this.game.debug.spriteInfo(this.player, 32, 32)
     }
+  }
+
+  setupText () {
+    this.scoreText = this.createText(100, 20, 'left', `Score: ${this.game.globals.score}`)
+    this.level = this.createText(200, 20, 'center', `Level: ${this.game.globals.level}`)
+    this.health = this.createText(0, 20, 'right', `Health: ${this.player.health}`)
+  }
+
+  createText (x, y, align, text) {
+    return this.game.add.bitmapText(x, y, 'nokia', text, 0)
   }
 }
