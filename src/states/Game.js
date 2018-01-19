@@ -31,10 +31,18 @@ export default class extends Phaser.State {
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
-    this.game.physics.arcade.collide(this.player, this.batsGroup, () => this.player.damage(1))
-    this.bats = createBats(this.game, 3)
-    this.bats.forEach(bat => this.game.add.existing(bat))
+    this.game.physics.arcade.collide(this.player, this.batsGroup, () => {
+      this.player.damage(1)
+      this.healthText.text = `Health: ${this.player.health}`
+    })
     this.game.physics.arcade.collide(this.player.sword, this.bats)
+    if (this.player.y < 5) {
+      console.log('hiya', this.game.globals.level)
+      this.game.generateEnemies(this.game)
+      this.player.body.position.set(137, 247)
+      this.game.globals.level++
+      this.levelText.text = `Level: ${this.game.globals.level}`
+    }
   }
   render () {
     if (__DEV__) {
@@ -44,9 +52,9 @@ export default class extends Phaser.State {
   }
 
   setupText () {
-    this.scoreText = this.createText(100, 20, 'left', `Score: ${this.game.globals.score}`)
-    this.level = this.createText(200, 20, 'center', `Level: ${this.game.globals.level}`)
-    this.health = this.createText(0, 20, 'right', `Health: ${this.player.health}`)
+    this.scoreText = this.createText(675, 20, 'left', `Score: ${this.game.globals.score}`)
+    this.levelText = this.createText(675, 110, 'center', `Level: ${this.game.globals.level}`)
+    this.healthText = this.createText(675, 200, 'right', `Health: 100`)
   }
 
   createText (x, y, align, text) {
