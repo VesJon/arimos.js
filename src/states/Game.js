@@ -20,12 +20,21 @@ export default class extends Phaser.State {
       asset: 'knight'
     })
     this.game.add.existing(this.player)
-    this.bats = createBats(this.game, 3)
-    this.bats.forEach(bat => this.game.add.existing(bat))
+    this.game.playerHealth = 100
+    this.player.body.bounce.set(1)
+
+    this.batsGroup = this.game.add.group()
+    this.game.generateEnemies = (game) => {
+      this.batsGroup.removeAll(true)
+      const bats = createBats(this.game, 3)
+      this.batsGroup.addMultiple(bats)
+    }
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
-    this.game.physics.arcade.collide(this.player, this.bats)
+    this.game.physics.arcade.collide(this.player, this.batsGroup, () => this.player.damage(1))
+    this.bats = createBats(this.game, 3)
+    this.bats.forEach(bat => this.game.add.existing(bat))
     this.game.physics.arcade.collide(this.player.sword, this.bats)
   }
   render () {
