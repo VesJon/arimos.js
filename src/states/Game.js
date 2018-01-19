@@ -2,6 +2,8 @@
 import Phaser from 'phaser'
 import Player from '../sprites/player'
 import {createBats} from '../sprites/bat'
+import Snake from '../sprites/snake'
+import {hitBat, hitSnake} from '../sprites/collisionFuncs'
 
 export default class extends Phaser.State {
   init () {}
@@ -21,41 +23,35 @@ export default class extends Phaser.State {
     this.game.add.existing(this.player)
     this.setupText()
     this.player.body.bounce.set(1)
-
     this.batsGroup = this.game.add.group()
     this.game.generateEnemies = (game) => {
       this.batsGroup.removeAll(true)
       const bats = createBats(this.game, 3)
       this.batsGroup.addMultiple(bats)
     }
+    this.snake = new Snake({
+      game: this.game,
+      x: 60,
+      y: 60,
+      asset: 'snake'
+    })
+    this.game.add.existing(this.snake)
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
+    // snake
+    this.game.physics.arcade.collide(this.snake, this.player, () => {
+      this.player.damage(5)
+      this.healthText.text = `Health: ${this.player.health}`
+    }, () => {
+      return !this.game.physics.arcade.overlap(this.player.sword, this.snake)
+    })
+    hitSnake(this.game, this.player, this.snake)
+    // this.game.physics.arcade.collide(this.snake, this.player.sword)
+    this.game.physics.arcade.moveToXY(this.snake, this.player.x, this.player.y, 600, 3000)
+    // bats
     this.batsGroup.children.forEach(bat => {
-      this.game.physics.arcade.overlap(this.player.sword, bat, (sword, bat) => {
-        bat.isDying = true
-        bat.visible = false
-        this.game.globals.score++
-        this.scoreText.text = `Score: ${this.game.globals.score}`
-        setTimeout(() => {
-          bat.visible = true
-          setTimeout(() => {
-            bat.visible = false
-            setTimeout(() => {
-              bat.visible = true
-              setTimeout(() => {
-                bat.visible = false
-                setTimeout(() => {
-                  bat.kill()
-                  this.isKilling = false
-                }, 300)
-              }, 300)
-            }, 300)
-          }, 300)
-        }, 300)
-      }, (sword, bat) => {
-        return !bat.isDying
-      })
+      hitBat(this.game, this.player, bat, this.scoreText)
     })
     this.game.physics.arcade.collide(this.player, this.batsGroup.children, () => {
       this.player.damage(1)
@@ -73,12 +69,13 @@ export default class extends Phaser.State {
   render () {
     if (__DEV__) {
       //this.game.debug.spriteInfo(this.player, 200,200)
-      // this.game.debug.body(this.player.sword)
-      // this.game.debug.spriteBounds(this.player)
+    //   this.game.debug.body(this.snake)
+    //  this.game.debug.spriteBounds(this.snake)
+    //  this.game.debug.spriteBounds(this.player.sword)
+    //  this.game.debug.body(this.player.sword)
       // this.batsGroup.children.forEach(bat => this.game.debug.spriteBounds(bat))
     }
   }
-
   setupText () {
     this.scoreText = this.createText(675, 20, 'left', `Score: ${this.game.globals.score}`)
     this.levelText = this.createText(675, 110, 'center', `Level: ${this.game.globals.level}`)
