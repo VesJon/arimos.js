@@ -31,10 +31,30 @@ export default class extends Phaser.State {
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
-
     this.batsGroup.children.forEach(bat => {
       this.game.physics.arcade.overlap(this.player.sword, bat, (sword, bat) => {
-        bat.kill()
+        bat.isDying = true
+        bat.visible = false
+        this.game.globals.score++
+        this.scoreText.text = `Score: ${this.game.globals.score}`
+        setTimeout(() => {
+          bat.visible = true
+          setTimeout(() => {
+            bat.visible = false
+            setTimeout(() => {
+              bat.visible = true
+              setTimeout(() => {
+                bat.visible = false
+                setTimeout(() => {
+                  bat.kill()
+                  this.isKilling = false
+                }, 300)
+              }, 300)
+            }, 300)
+          }, 300)
+        }, 300)
+      }, (sword, bat) => {
+        return !bat.isDying
       })
     })
     this.game.physics.arcade.collide(this.player, this.batsGroup.children, () => {
@@ -53,9 +73,9 @@ export default class extends Phaser.State {
   render () {
     if (__DEV__) {
       //this.game.debug.spriteInfo(this.player, 200,200)
-      this.game.debug.spriteBounds(this.player.sword)
-      this.game.debug.spriteBounds(this.player)
-      this.batsGroup.children.forEach(bat => this.game.debug.spriteBounds(bat))
+      // this.game.debug.body(this.player.sword)
+      // this.game.debug.spriteBounds(this.player)
+      // this.batsGroup.children.forEach(bat => this.game.debug.spriteBounds(bat))
     }
   }
 
