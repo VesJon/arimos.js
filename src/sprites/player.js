@@ -15,7 +15,7 @@ export default class Player extends Phaser.Sprite {
     switch (true) {
       case this.y < 5:
         this.game.generateEnemies(this.game)
-        this.reset(140, 246)
+        this.body.position.set(137, 247)
         break
       case this.cursors.down.isDown:
         this.body.velocity.y = 200
