@@ -11,8 +11,7 @@ export default class extends Phaser.State {
     this.map = this.game.add.tilemap('tilemap')
     this.map.addTilesetImage('tiles', 'tiles')
     this.groundLayer = this.map.createLayer('TileLayer')// must match layer name
-    this.groundLayer.resizeWorld()
-    this.map.setCollisionBetween(47, 48)
+    this.map.setCollisionBetween(17, 20)
     this.player = new Player({
       game: this.game,
       x: 200,
@@ -20,17 +19,73 @@ export default class extends Phaser.State {
       asset: 'knight'
     })
     this.game.add.existing(this.player)
+    this.setupText()
+    this.player.body.bounce.set(1)
 
-    this.bats = createBats(this.game, 3)
-    this.bats.forEach(bat => this.game.add.existing(bat))
+    this.batsGroup = this.game.add.group()
+    this.game.generateEnemies = (game) => {
+      this.batsGroup.removeAll(true)
+      const bats = createBats(this.game, 3)
+      this.batsGroup.addMultiple(bats)
+    }
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
-
+    this.batsGroup.children.forEach(bat => {
+      this.game.physics.arcade.overlap(this.player.sword, bat, (sword, bat) => {
+        bat.isDying = true
+        bat.visible = false
+        this.game.globals.score++
+        this.scoreText.text = `Score: ${this.game.globals.score}`
+        setTimeout(() => {
+          bat.visible = true
+          setTimeout(() => {
+            bat.visible = false
+            setTimeout(() => {
+              bat.visible = true
+              setTimeout(() => {
+                bat.visible = false
+                setTimeout(() => {
+                  bat.kill()
+                  this.isKilling = false
+                }, 300)
+              }, 300)
+            }, 300)
+          }, 300)
+        }, 300)
+      }, (sword, bat) => {
+        return !bat.isDying
+      })
+    })
+    this.game.physics.arcade.collide(this.player, this.batsGroup.children, () => {
+      this.player.damage(1)
+      this.healthText.text = `Health: ${this.player.health}`
+    }, () => {
+      return !this.game.physics.arcade.overlap(this.player.sword, this.batsGroup.children)
+    })
+    if (this.player.y < 5) {
+      this.game.generateEnemies(this.game)
+      this.player.body.position.set(137, 247)
+      this.game.globals.level++
+      this.levelText.text = `Level: ${this.game.globals.level}`
+    }
   }
   render () {
     if (__DEV__) {
-      this.game.debug.spriteInfo(this.player, 32, 32)
+      //this.game.debug.spriteInfo(this.player, 200,200)
+      // this.game.debug.body(this.player.sword)
+      // this.game.debug.spriteBounds(this.player)
+      // this.batsGroup.children.forEach(bat => this.game.debug.spriteBounds(bat))
     }
+  }
+
+  setupText () {
+    this.scoreText = this.createText(675, 20, 'left', `Score: ${this.game.globals.score}`)
+    this.levelText = this.createText(675, 110, 'center', `Level: ${this.game.globals.level}`)
+    this.healthText = this.createText(675, 200, 'right', `Health: 100`)
+  }
+
+  createText (x, y, align, text) {
+    return this.game.add.bitmapText(x, y, 'nokia', text, 0)
   }
 }
