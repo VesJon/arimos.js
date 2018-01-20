@@ -5,7 +5,7 @@ import {createBats} from '../sprites/bat'
 import Snake from '../sprites/snake'
 import {hitBat, hitSnake} from '../sprites/collisionFuncs'
 import {setupText} from '../texts/index'
-
+import {portal} from '../sprites/portals'
 
 export default class extends Phaser.State {
   init () {}
@@ -18,8 +18,8 @@ export default class extends Phaser.State {
     this.map.setCollisionBetween(17, 20)
     this.player = new Player({
       game: this.game,
-      x: 200,
-      y: 200,
+      x: 410,
+      y: 175,
       asset: 'knight'
     })
     this.game.add.existing(this.player)
@@ -36,7 +36,7 @@ export default class extends Phaser.State {
     }
     this.snake = new Snake({
       game: this.game,
-      x:random(256, 574),
+      x: random(256, 574),
       y: random(32, 342),
       asset: 'snake'
     })
@@ -51,7 +51,7 @@ export default class extends Phaser.State {
     }, () => {
       return !this.game.physics.arcade.overlap(this.player.sword, this.snake)
     })
-    hitSnake(this.game, this.player, this.snake)
+    hitSnake(this.game, this.player, this.snake, this.scoreText)
     // this.game.physics.arcade.collide(this.snake, this.player.sword)
     this.game.physics.arcade.moveToXY(this.snake, this.player.x, this.player.y, 600, 3000)
     // bats
@@ -64,35 +64,10 @@ export default class extends Phaser.State {
     }, () => {
       return !this.game.physics.arcade.overlap(this.player.sword, this.batsGroup.children)
     })
-    if (this.player.y < 5) {
-      this.game.generateEnemies(this.game)
-      this.player.body.position.set(414, 342)
-      this.game.globals.level++
-      this.snake.revive()
-      this.levelText.text = `Level: ${this.game.globals.level}`
-    }
-    if (this.player.x < 218 && (this.player.y > 170 || this.player.y < 182)) {
-      this.game.generateEnemies(this.game)
-      this.player.body.position.set(562, 170)
-      this.game.globals.level++
-      this.snake.revive()
-      this.levelText.text = 'Level: ' + this.game.globals.level
-    }
-    if (this.player.x > 604 && (this.player.y > 170 || this.player.y < 182)) {
-      this.game.generateEnemies(this.game)
-      this.player.body.position.set(256, 170)
-      this.game.globals.level++
-      this.snake.revive()
-      this.levelText.text = 'Level: ' + this.game.globals.level
-    }
-    if (this.player.y > 360) {
-      this.game.generateEnemies(this.game)
-      this.player.body.position.set(423, 32)
-      this.game.globals.level++
-      this.snake.revive()
-      this.levelText.text = 'Level: ' + this.game.globals.level
+    // Portal
+    portal(this.game, this.player, this.snake, this.levelText)
+    if(this.player.health === 0) this.game.state.start('GameOver')
   }
-}
   render () {
     if (__DEV__) {
       this.game.debug.spriteInfo(this.player, 200,200)

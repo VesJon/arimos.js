@@ -25,12 +25,13 @@ export const hitBat = (game, player, bat, scoreText) => {
   })
 }
 
-export const hitSnake = (game, player, snake) => {
+export const hitSnake = (game, player, snake, scoreText) => {
   game.physics.arcade.collide(player.sword, snake, (sword, snake) => {
     if (snake.health < 0) {
+      game.globals.score += 10
+      scoreText.text = `Score: ${game.globals.score}`
       snake.kill()
     }
     snake.health = snake.health - 3
-    console.log(snake.health)
   })
 }
