@@ -15,6 +15,7 @@ export default class extends Phaser.State {
     this.load.spritesheet('snake', 'assets/images/GraySnake64x64.png', 64, 64)
     this.load.image('sword', 'assets/images/sword9x25.png')
     this.load.bitmapFont('nokia', 'assets/nokia16.png', 'assets/nokia16.xml')
+    this.load.audio('sfx', 'assets/audio/fx_mixdown.ogg')
   }
   create () {
     this.game.globals = Object.assign({}, globals)
