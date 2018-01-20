@@ -68,24 +68,28 @@ export default class extends Phaser.State {
       this.game.generateEnemies(this.game)
       this.player.body.position.set(414, 342)
       this.game.globals.level++
+      this.snake.revive()
       this.levelText.text = `Level: ${this.game.globals.level}`
     }
     if (this.player.x < 218 && (this.player.y > 170 || this.player.y < 182)) {
       this.game.generateEnemies(this.game)
       this.player.body.position.set(562, 170)
       this.game.globals.level++
+      this.snake.revive()
       this.levelText.text = 'Level: ' + this.game.globals.level
     }
     if (this.player.x > 604 && (this.player.y > 170 || this.player.y < 182)) {
       this.game.generateEnemies(this.game)
       this.player.body.position.set(256, 170)
       this.game.globals.level++
+      this.snake.revive()
       this.levelText.text = 'Level: ' + this.game.globals.level
     }
     if (this.player.y > 360) {
       this.game.generateEnemies(this.game)
       this.player.body.position.set(423, 32)
       this.game.globals.level++
+      this.snake.revive()
       this.levelText.text = 'Level: ' + this.game.globals.level
   }
 }
