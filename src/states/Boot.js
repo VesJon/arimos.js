@@ -17,9 +17,13 @@ export default class extends Phaser.State {
     this.load.bitmapFont('nokia', 'assets/nokia16.png', 'assets/nokia16.xml')
     this.load.audio('sfx', 'assets/audio/fx_mixdown.ogg')
     this.load.audio('steps', 'assets/audio/steps1.mp3')
-  }
-  create () {
     this.game.globals = Object.assign({}, globals)
+    fetch('/scores')
+      .then(res => res.json())
+      .then(scores => {
+        this.game.globals.highScores = scores
+      })
+      .catch('whoops')
   }
 
   render () {
