@@ -66,7 +66,7 @@ export default class extends Phaser.State {
     })
     // Portal
     portal(this.game, this.player, this.snake, this.levelText)
-    if(this.player.health === 0) this.game.state.start('GameOver')
+    if (this.player.health <= 0) this.game.state.start('GameOver')
   }
   render () {
     if (__DEV__) {

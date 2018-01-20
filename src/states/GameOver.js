@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
-import globals from './globals'
+// import globals from './globals'
 
 export default class extends Phaser.State {
   create () {
     this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
-    this.label = this.game.add.text(this.game.width / 2, this.game.height / 2, 'Score: ' + this.game.globals.score + '\nGAME OVER\nPress SPACE to restart', { font: '22px Lucida Console', fill: '#fff', align: 'center' });   
+    this.label = this.game.add.text(this.game.width / 2, this.game.height / 2, 'Score: ' + this.game.globals.score + '\nGAME OVER\nPress SPACE to restart', { font: '22px pixel', fill: '#fff', align: 'center' })  
     this.label.anchor.setTo(0.5, 0.5)
   }
   update () {
