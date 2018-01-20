@@ -28,6 +28,11 @@ export default class extends Phaser.State {
     })
     this.game.add.existing(this.player)
     this.player.body.bounce.set(1)
+    this.player.events.onKilled.add(() => {
+      this.fx.play('death')
+      this.player.sword.destroy()
+      // game over splash screen
+    })
 
     // add texts
     setupText(this.game, this)
@@ -48,15 +53,15 @@ export default class extends Phaser.State {
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
-    this.player.health < 1 && this.fx.play('death')
     // snake
     this.game.physics.arcade.collide(this.snake, this.player, () => {
-      this.player.damage(5)
+      this.player.damage(3)
+      this.fx.play('meow')
       this.healthText.text = `Health: ${this.player.health}`
     }, () => {
       return !this.game.physics.arcade.overlap(this.player.sword, this.snake)
     })
-    hitSnake(this.game, this.player, this.snake, this.fx)
+    hitSnake(this.game, this.player, this.snake, this.scoreText, this.fx)
     // this.game.physics.arcade.collide(this.snake, this.player.sword)
     this.game.physics.arcade.moveToXY(this.snake, this.player.x, this.player.y, 600, 3000)
     // bats
@@ -65,11 +70,22 @@ export default class extends Phaser.State {
     })
     this.game.physics.arcade.collide(this.player, this.batsGroup.children, () => {
       this.player.damage(1)
+      this.fx.play('meow')
       this.healthText.text = `Health: ${this.player.health}`
     }, () => {
       return !this.game.physics.arcade.overlap(this.player.sword, this.batsGroup.children)
     })
     if (this.player.y < 5) {
+      this.fx_steps.play()
+      setTimeout(() => {
+        this.fx_steps.play()
+        setTimeout(() => {
+          this.fx_steps.play()
+          setTimeout(() => {
+            this.fx_steps.play()
+          }, 300)
+        }, 300)
+      }, 300)
       this.game.generateEnemies(this.game)
       this.player.body.position.set(137, 247)
       this.game.globals.level++

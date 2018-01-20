@@ -1,5 +1,6 @@
 export const createSoundEffects = (state, game) => {
   state.fx = game.add.audio('sfx')
+  state.fx_steps = game.add.audio('steps')
   state.fx.allowMultiple = true
   state.fx.addMarker('alien death', 1, 1.0)
   state.fx.addMarker('boss hit', 3, 0.5)
