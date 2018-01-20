@@ -36,8 +36,8 @@ export default class extends Phaser.State {
     }
     this.snake = new Snake({
       game: this.game,
-      x: 60,
-      y: 60,
+      x:random(256, 574),
+      y: random(32, 342),
       asset: 'snake'
     })
     this.game.add.existing(this.snake)
@@ -66,14 +66,32 @@ export default class extends Phaser.State {
     })
     if (this.player.y < 5) {
       this.game.generateEnemies(this.game)
-      this.player.body.position.set(137, 247)
+      this.player.body.position.set(414, 342)
       this.game.globals.level++
       this.levelText.text = `Level: ${this.game.globals.level}`
     }
+    if (this.player.x < 218 && (this.player.y > 170 || this.player.y < 182)) {
+      this.game.generateEnemies(this.game)
+      this.player.body.position.set(562, 170)
+      this.game.globals.level++
+      this.levelText.text = 'Level: ' + this.game.globals.level
+    }
+    if (this.player.x > 604 && (this.player.y > 170 || this.player.y < 182)) {
+      this.game.generateEnemies(this.game)
+      this.player.body.position.set(256, 170)
+      this.game.globals.level++
+      this.levelText.text = 'Level: ' + this.game.globals.level
+    }
+    if (this.player.y > 360) {
+      this.game.generateEnemies(this.game)
+      this.player.body.position.set(423, 32)
+      this.game.globals.level++
+      this.levelText.text = 'Level: ' + this.game.globals.level
   }
+}
   render () {
     if (__DEV__) {
-      //this.game.debug.spriteInfo(this.player, 200,200)
+      this.game.debug.spriteInfo(this.player, 200,200)
     //   this.game.debug.body(this.snake)
     //  this.game.debug.spriteBounds(this.snake)
     //  this.game.debug.spriteBounds(this.player.sword)
@@ -81,4 +99,8 @@ export default class extends Phaser.State {
       // this.batsGroup.children.forEach(bat => this.game.debug.spriteBounds(bat))
     }
   }
+}
+
+var random = function random(min, max) {
+  return Math.random() * (max - min) + min
 }
