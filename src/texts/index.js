@@ -8,7 +8,7 @@ export const setupText = (game, state) => {
     if (index === 0) {
       createText(game, 20, 20, 'High Scores')
     }
-    createText(game, 20, 20 + ((index + 1) * 90), `${score.player} ${score.score}`)
+    createText(game, 20, 20 + ((index + 1) * 90), `${score.initials} ${score.score}`)
   })
 }
 

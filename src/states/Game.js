@@ -6,6 +6,7 @@ import Snake from '../sprites/snake'
 import {hitBat, hitSnake} from '../sprites/collisionFuncs'
 import {setupText} from '../texts/index'
 import {createSoundEffects} from '../sprites/audio'
+import axios from 'axios'
 
 export default class extends Phaser.State {
   init () {}
@@ -31,6 +32,14 @@ export default class extends Phaser.State {
     this.player.events.onKilled.add(() => {
       this.fx.play('death')
       this.player.sword.destroy()
+      console.log(this.game.globals.score)
+      const data = {
+        secret: '34iadf0ivdsf9043uut480qsdkffmvi40ru0w9ef',
+        initials: 'JAR',
+        score: this.game.globals.score
+      }
+      axios.post('/scores', data)
+        .then(res => console.log(res.body))
       // game over splash screen
     })
 
@@ -40,7 +49,7 @@ export default class extends Phaser.State {
     this.batsGroup = this.game.add.group()
     this.game.generateEnemies = (game) => {
       this.batsGroup.removeAll(true)
-      const bats = createBats(this.game, 3)
+      const bats = createBats(this.game, 3 + this.game.globals.level)
       this.batsGroup.addMultiple(bats)
     }
     this.snake = new Snake({
