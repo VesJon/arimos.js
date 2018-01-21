@@ -6,8 +6,9 @@ import Snake from '../sprites/snake'
 import {hitBat, hitSnake} from '../sprites/collisionFuncs'
 import {setupText} from '../texts/index'
 import {createSoundEffects} from '../sprites/audio'
-import axios from 'axios'
 import {portal} from '../sprites/portals'
+
+export const formData = {}
 
 export default class extends Phaser.State {
   init () {}
@@ -33,15 +34,10 @@ export default class extends Phaser.State {
     this.player.events.onKilled.add(() => {
       this.fx.play('death')
       this.player.sword.destroy()
-      console.log(this.game.globals.score)
-      const data = {
-        secret: '34iadf0ivdsf9043uut480qsdkffmvi40ru0w9ef',
-        initials: 'JAR',
-        score: this.game.globals.score
-      }
-      axios.post('/scores', data)
-        .then(res => console.log(res.body))
+      formData.secret = '34iadf0ivdsf9043uut480qsdkffmvi40ru0w9ef'
+      formData.score = this.game.globals.score
       // game over splash screen
+      this.game.state.start('GameOver')
     })
 
     // add texts
@@ -60,6 +56,15 @@ export default class extends Phaser.State {
       asset: 'snake'
     })
     this.game.add.existing(this.snake)
+    if (this.game.globals.level > 2) {
+      this.snake2 = new Snake({
+        game: this.game,
+        x: random(256, 574),
+        y: random(32, 342),
+        asset: 'snake'
+      })
+      this.game.add.existing(this.snake2)
+    }
   }
   update () {
     this.game.physics.arcade.collide(this.player, this.groundLayer)
@@ -88,25 +93,9 @@ export default class extends Phaser.State {
       return !this.game.physics.arcade.overlap(this.player.sword, this.batsGroup.children)
     })
 
-    if (this.player.y < 5) {
-      this.fx_steps.play()
-      setTimeout(() => {
-        this.fx_steps.play()
-        setTimeout(() => {
-          this.fx_steps.play()
-          setTimeout(() => {
-            this.fx_steps.play()
-          }, 300)
-        }, 300)
-      }, 300)
-      this.game.generateEnemies(this.game)
-      this.player.body.position.set(137, 247)
-      this.game.globals.level++
-      this.levelText.text = `Level: ${this.game.globals.level}`
-    }
     // Portal
-    portal(this.game, this.player, this.snake, this.levelText)
-    if (this.player.health <= 0) this.game.state.start('GameOver')
+    portal(this.game, this.player, this.snake, this.levelText, this.fx_steps)
+    // if (this.player.health <= 0) this.game.state.start('GameOver')
   }
 
   render () {
@@ -115,6 +104,6 @@ export default class extends Phaser.State {
   }
 }
 
-var random = function random(min, max) {
+var random = function (min, max) {
   return Math.random() * (max - min) + min
 }

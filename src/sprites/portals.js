@@ -1,4 +1,5 @@
-export const portal = (game, player, snake, levelText) => {
+export const portal = (game, player, snake, levelText, stepsSound) => {
+  playStepsSound(stepsSound)
   if (player.y < 5) {
     game.generateEnemies(game)
     player.body.position.set(414, 342)
@@ -27,4 +28,17 @@ export const portal = (game, player, snake, levelText) => {
     snake.revive()
     levelText.text = 'Level: ' + game.globals.level
   }
+}
+
+const playStepsSound = (stepsSound) => {
+  stepsSound.play()
+  setTimeout(() => {
+    stepsSound.play()
+    setTimeout(() => {
+      stepsSound.play()
+      setTimeout(() => {
+        stepsSound.play()
+      }, 300)
+    }, 300)
+  }, 300)
 }

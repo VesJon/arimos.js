@@ -23,6 +23,17 @@
             align-items: center;
             font-family: 'pixel'
         }
+        .input-initials {
+            position: absolute;
+            top: 180px;
+            display: flex;
+        }
+        .letter {
+            width: 10px;
+        }
+        .submit-button {
+            display: none;
+        }
     </style>
 </head>
 
@@ -31,6 +42,14 @@
         <h1>
             Arimos
         </h1>
+    </div>
+    <div class="input-initials">
+        <form action="" class="initialInput">
+            <input id="1" class="letter" maxlength="1" placeholder="A" type="hidden"></input>
+            <input id="2" class="letter" maxlength="1" placeholder="A" type="hidden"></input>
+            <input id="3" class="letter" maxlength="1" placeholder="A" type="hidden"></input>
+            <button class="submit-button" type="submit">Submit</button>
+        </form>
     </div>
     <audio autoplay loop src="assets/audio/rolemusi_-_07_-_07_rolemusic_-_the_great_madeja.mp3"></audio>
     <div id="content"></div>

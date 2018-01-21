@@ -26,7 +26,6 @@ export const hitBat = (game, player, enemy, scoreText, fx) => {
   })
 }
 
-<<<<<<< HEAD
 export const hitSnake = (game, player, snake, scoreText, fx) => {
   game.physics.arcade.collide(player.sword, snake, (sword, snake) => {
     if (snake.health < 0) {
@@ -45,6 +44,7 @@ export const hitSnake = (game, player, snake, scoreText, fx) => {
               snake.visible = false
               setTimeout(() => {
                 snake.kill()
+                snake.isDying = false
               }, 300)
             }, 300)
           }, 300)

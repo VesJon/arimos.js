@@ -4,8 +4,9 @@ import Phaser from 'phaser'
 
 import BootState from './states/Boot'
 import SplashState from './states/Splash'
-import GameState from './states/Game'
+import GameState, {formData} from './states/Game'
 import GameOver from './states/GameOver'
+import axios from 'axios'
 
 import config from './config'
 
@@ -28,8 +29,29 @@ class Game extends Phaser.Game {
     }
   }
 }
-
 window.game = new Game()
+
+const form = document.getElementsByClassName('initialInput')[0]
+form.onsubmit = (event) => {
+  event.preventDefault()
+  const first = document.getElementById("1")
+  const second = document.getElementById("2")
+  const third = document.getElementById("3")
+  const initials = first.value + second.value + third.value
+  axios.post('/scores', {
+    secret: formData.secret,
+    score: formData.score,
+    initials
+  })
+    .then(() => {
+      window.game.state.start('Game')
+      document.getElementById("1").type = 'hidden'
+      document.getElementById("2").type = 'hidden'
+      document.getElementById("3").type = 'hidden'
+      document.getElementsByClassName('submit-button')[0].style.display = 'none'
+    })
+    .catch(console.error)
+}
 
 if (window.cordova) {
   var app = {
@@ -51,7 +73,6 @@ if (window.cordova) {
     },
 
     receivedEvent: function (id) {
-      console.log('Received Event: ' + id)
     }
   }
 
