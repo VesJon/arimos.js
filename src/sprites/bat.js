@@ -21,8 +21,8 @@ export const createBats = (game, number) => {
   for (let i = 0; i < number; i++) {
     bats.push(new Bat({
       game,
-      x: random(230, 640),
-      y: random(32, 448),
+      x: random(256, 574),
+      y: random(32, 342),
       asset: 'bat'
     }))
   }

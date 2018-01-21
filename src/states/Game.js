@@ -7,6 +7,7 @@ import {hitBat, hitSnake} from '../sprites/collisionFuncs'
 import {setupText} from '../texts/index'
 import {createSoundEffects} from '../sprites/audio'
 import axios from 'axios'
+import {portal} from '../sprites/portals'
 
 export default class extends Phaser.State {
   init () {}
@@ -23,8 +24,8 @@ export default class extends Phaser.State {
     // setup player
     this.player = new Player({
       game: this.game,
-      x: 200,
-      y: 200,
+      x: 410,
+      y: 175,
       asset: 'knight'
     })
     this.game.add.existing(this.player)
@@ -54,8 +55,8 @@ export default class extends Phaser.State {
     }
     this.snake = new Snake({
       game: this.game,
-      x: 60,
-      y: 60,
+      x: random(256, 574),
+      y: random(32, 342),
       asset: 'snake'
     })
     this.game.add.existing(this.snake)
@@ -70,7 +71,9 @@ export default class extends Phaser.State {
     }, () => {
       return !this.game.physics.arcade.overlap(this.player.sword, this.snake)
     })
+
     hitSnake(this.game, this.player, this.snake, this.scoreText, this.fx)
+
     // this.game.physics.arcade.collide(this.snake, this.player.sword)
     this.game.physics.arcade.moveToXY(this.snake, this.player.x, this.player.y, 600, 3000)
     // bats
@@ -84,6 +87,7 @@ export default class extends Phaser.State {
     }, () => {
       return !this.game.physics.arcade.overlap(this.player.sword, this.batsGroup.children)
     })
+
     if (this.player.y < 5) {
       this.fx_steps.play()
       setTimeout(() => {
@@ -100,15 +104,17 @@ export default class extends Phaser.State {
       this.game.globals.level++
       this.levelText.text = `Level: ${this.game.globals.level}`
     }
+    // Portal
+    portal(this.game, this.player, this.snake, this.levelText)
+    if (this.player.health <= 0) this.game.state.start('GameOver')
   }
+
   render () {
     if (__DEV__) {
-      // this.game.debug.spriteInfo(this.player, 200,200)
-    //   this.game.debug.body(this.snake)
-    //  this.game.debug.spriteBounds(this.snake)
-    //  this.game.debug.spriteBounds(this.player.sword)
-    //  this.game.debug.body(this.player.sword)
-      // this.batsGroup.children.forEach(bat => this.game.debug.spriteBounds(bat))
     }
   }
+}
+
+var random = function random(min, max) {
+  return Math.random() * (max - min) + min
 }
